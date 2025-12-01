@@ -1,0 +1,108 @@
+** start of main.py **
+
+class Category:
+    def __init__(self, name):
+        self.name = name
+        self.ledger = []
+
+    def deposit(self, amount, description=""):
+        self.ledger.append({'amount': amount, 'description': description})
+
+    def withdraw(self, amount,description=""):
+        if self.check_funds(amount):
+            self.ledger.append({'amount': -amount, 'description': description})
+            return True
+        return False
+
+    def get_balance(self):
+        balance = 0
+        for transaction in self.ledger:
+            balance += transaction['amount']
+        return balance
+
+    def check_funds(self, amount):
+        if amount > self.get_balance():
+            return False
+        return True
+
+    def transfer(self, amount, category):
+        description_withdraw = f"Transfer to {category.name}"
+        description_deposit = f"Transfer from {self.name}"
+
+        if self.withdraw(amount, description_withdraw):
+            category.deposit(amount, description_deposit)
+            return True
+        return False
+
+    def __str__(self):
+        title = self.name.center(30, '*')
+        output = title + '\n'
+    
+        for item in self.ledger:
+            description = item['description'][:23]
+            amount = f"{item['amount']:.2f}"
+        
+            line = description.ljust(23) + amount.rjust(7)
+            output += line + '\n'
+    
+        total = f"Total: {self.get_balance():.2f}"
+        output += total
+    
+        return output 
+
+def create_spend_chart(categories):
+    spent_amounts = []
+    for category in categories:
+        total_spent = 0
+        for item in category.ledger:
+            if item['amount'] < 0:
+                total_spent += abs(item['amount'])
+        spent_amounts.append(total_spent)
+
+    total_spent_all = sum(spent_amounts)
+
+    percentages = []
+    for amount in spent_amounts:
+        if total_spent_all > 0:
+            percentage = (amount / total_spent_all) * 100
+            rounded = int(percentage / 10) * 10
+            percentages.append(rounded)
+
+    chart = "Percentage spent by category\n"
+
+    for level in range(100, -10, -10):
+        chart += str(level).rjust(3) + "|"
+
+        for percent in percentages:
+            if percent >= level:
+                chart += " o "
+            else:
+                chart += "   "
+
+        chart += " \n"
+
+    chart += "    " + "-" * (len(categories) * 3 + 1) + "\n"
+
+    max_length = 0
+    for category in categories:
+        if len(category.name) > max_length:
+            max_length = len(category.name)
+
+    for i in range(max_length):
+        chart += "     "
+
+        for category in categories:
+            if i < len(category.name):
+                letter = category.name[i]
+            else:
+                letter = " "
+
+            chart += letter + "  "
+
+        if i < max_length - 1:
+            chart += "\n"
+
+    return chart
+
+** end of main.py **
+
