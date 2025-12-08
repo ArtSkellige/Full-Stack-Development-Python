@@ -1,0 +1,16 @@
+** start of main.py **
+
+def quick_sort(lst):
+    if len(lst) <= 1:
+        return lst
+
+    pivot = lst[0]
+
+    less = [element for element in lst if element < pivot]
+    equal = [element for element in lst if element == pivot]
+    greater = [element for element in lst if element > pivot]
+
+    return quick_sort(less) + equal + quick_sort(greater)
+
+** end of main.py **
+
