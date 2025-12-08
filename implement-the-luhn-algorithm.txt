@@ -1,0 +1,27 @@
+** start of main.py **
+
+def verify_card_number(card_num):
+    clean_number = card_num.replace(' ', '').replace('-', '')
+
+    reversed_digits = [int(ch) for ch in clean_number[::-1]]
+
+    processed_digits = []
+
+    for index, digit in enumerate(reversed_digits):
+        if index % 2 == 1:
+            doubled = digit * 2
+            if doubled > 9:
+                doubled = doubled - 9
+            processed_digits.append(doubled)
+        else:
+            processed_digits.append(digit)
+
+    total = sum(processed_digits)
+
+    if total % 10 == 0:
+        return "VALID!"
+    else:
+        return "INVALID!"
+
+** end of main.py **
+
