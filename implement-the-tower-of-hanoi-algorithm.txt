@@ -1,0 +1,27 @@
+** start of main.py **
+
+def hanoi_solver(n):
+    A = list(range(n, 0, -1))
+    B = []
+    C = []
+
+    result = []
+    result.append(f'{A} {B} {C}')
+
+    def move(n, source, target, auxiliary):
+
+        if n == 1:
+            disk = source.pop()
+            target.append(disk)
+            result.append(f'{A} {B} {C}')
+        else:
+            move(n-1, source, auxiliary, target)
+            move(1, source, target, auxiliary)
+            move(n-1, auxiliary, target, source)
+
+    move(n, A, C, B)
+
+    return '\n'.join(result)
+
+** end of main.py **
+
