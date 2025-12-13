@@ -1,0 +1,24 @@
+** start of main.py **
+
+def dfs(matrix, start):
+    visited = set()
+    stack = [start]
+    result = []
+
+    while stack:
+        node = stack.pop()
+
+        if node in visited:
+            continue
+        else:
+            visited.add(node)
+            result.append(node)
+
+        for neighbor in range(len(matrix)):
+            if matrix[node][neighbor] and neighbor not in visited:
+                stack.append(neighbor)
+
+    return result
+
+** end of main.py **
+
